@@ -18,7 +18,8 @@ public class TileView : MonoBehaviour, ITile
 
     private void OnMouseDown()
     {
-        throw new NotImplementedException();
+        Debug.Log($"{X} {Y}");
+        ApplyTile();
     }
 
     public bool ApplyTile()
