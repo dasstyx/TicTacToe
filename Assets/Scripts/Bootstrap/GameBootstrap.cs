@@ -5,12 +5,8 @@ using Zenject;
 public class GameBootstrap : MonoBehaviour
 {
     [Inject] private TurnWarden.Factory _wardenFactory;
+    [Inject] private IGameOverNotificator _notificator;
     private TurnWarden _warden;
-
-    private void Start()
-    {
-        WardenSetup();
-    }
 
     public TurnWarden WardenSetup()
     {

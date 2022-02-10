@@ -24,10 +24,10 @@ public class TileView : MonoBehaviour, ITile
 
     public bool ApplyTile()
     {
+        var type = _turnWarden.GetCurrentMark();
         var result = _tile.ApplyTile();
         if (result)
         {
-            var type = _turnWarden.GetCurrentMark();
             var go = _markFactory.Create(type, transform.position);
             go.transform.SetParent(transform);
         }

@@ -22,18 +22,17 @@ public class Tile : ITile
 
     public bool ApplyTile()
     {
-        if (!_isEmpty)
+        var turnDone = MakeTurn();
+        if (!_isEmpty || !turnDone)
         {
             return false;
         }
-
         _isEmpty = false;
-        MakeTurn();
         return true;
     }
 
-    private void MakeTurn()
+    private bool MakeTurn()
     {
-        _turnWarden.MakeTurn(this);
+        return _turnWarden.MakeTurn(this);
     }
 }
