@@ -12,8 +12,8 @@ public class GameBootstrap : MonoBehaviour
     {
         Player[] players = new[]
         {
-            new Player(MarkType.Cross, "1"),
-            new Player(MarkType.Zero, "2")
+            new Player(MarkType.Cross, "player 1"),
+            new Player(MarkType.Zero, "player 2")
         };
 
         var rand = new System.Random();

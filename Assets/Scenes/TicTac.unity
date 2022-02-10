@@ -369,7 +369,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8773585, g: 0.8010133, b: 0.18623178, a: 1}
+  m_Color: {r: 0.87058824, g: 0.32941177, b: 0.09803922, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -381,7 +381,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 1
     m_MinSize: 10
-    m_MaxSize: 80
+    m_MaxSize: 100
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -754,6 +754,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30398691f47f4896891d1fab82f2d8ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameSize: 0
 --- !u!1 &685849563
 GameObject:
   m_ObjectHideFlags: 0
