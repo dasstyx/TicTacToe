@@ -7,10 +7,9 @@ public class GameInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        Container.BindInstance(_boardSize).WhenInjectedInto(typeof(TicTacTurnChecker), typeof(GameBootstrapUI));
+        Container.BindInstance(_boardSize).WhenInjectedInto(typeof(TicTacTurnChecker));
         Container.BindInterfacesTo<TicTacTurnChecker>().AsSingle();
         Container.Bind<IMarkViewFactory>().To<MarkViewFactory>().FromComponentInHierarchy().AsSingle();
-        // Container.Bind<IGameOverNotificator>().
 
         Container.BindFactory<Player[], int, TurnWarden, TurnWarden.Factory>();
         WardenSetup();
