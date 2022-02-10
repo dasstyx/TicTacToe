@@ -1,42 +1,45 @@
-﻿using UnityEngine;
+﻿using tictac.GameRules.GameTurnCheck;
+using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-[RequireComponent(typeof(CanvasGroup))]
-public class GameOverResultsView : MonoBehaviour
+namespace tictac.UI
 {
-    [Inject] private IGameOverNotificator _notificator;
-    [Inject] private ResolvePlayerFromResult _resolvePlayer;
-
-    [SerializeField] private GameObject _winnerTextGroup;
-    [SerializeField] private GameObject _drawTextGroup;
-    [SerializeField] private Text _playerLabel;
-
-    private void Start()
+    [RequireComponent(typeof(CanvasGroup))]
+    public class GameOverResultsView : MonoBehaviour
     {
-        _notificator.SubscribeToGameOver(result => GameOver(result));
-    }
-    
-    private void GameOver(TurnResult result)
-    {
-        TurnCanvasOn();
-        if (result == TurnResult.Draw)
+        [SerializeField] private GameObject _winnerTextGroup;
+        [SerializeField] private GameObject _drawTextGroup;
+        [SerializeField] private Text _playerLabel;
+        [Inject] private IGameOverNotificator _notificator;
+        [Inject] private ResolvePlayerFromResult _resolvePlayer;
+
+        private void Start()
         {
-            _drawTextGroup.SetActive(true);
+            _notificator.SubscribeToGameOver(result => GameOver(result));
         }
-        else
-        {
-            _winnerTextGroup.SetActive(true);
-            Player player = _resolvePlayer.ResultToPlayer(result);
-            _playerLabel.text = player.Name;
-        }
-    }
 
-    private void TurnCanvasOn()
-    {
-        var panelCanvas = GetComponent<CanvasGroup>();
-        panelCanvas.alpha = 1;
-        panelCanvas.interactable = true;
-        panelCanvas.blocksRaycasts = true;
+        private void GameOver(TurnResult result)
+        {
+            TurnCanvasOn();
+            if (result == TurnResult.Draw)
+            {
+                _drawTextGroup.SetActive(true);
+            }
+            else
+            {
+                _winnerTextGroup.SetActive(true);
+                var player = _resolvePlayer.ResultToPlayer(result);
+                _playerLabel.text = player.Name;
+            }
+        }
+
+        private void TurnCanvasOn()
+        {
+            var panelCanvas = GetComponent<CanvasGroup>();
+            panelCanvas.alpha = 1;
+            panelCanvas.interactable = true;
+            panelCanvas.blocksRaycasts = true;
+        }
     }
 }

@@ -1,79 +1,53 @@
 ﻿using System;
 using UnityEngine;
 
-public class TicTacTurnChecker : IGameOverNotificator, ITicTacTurnChecker
+namespace tictac.GameRules.GameTurnCheck
 {
-    private readonly TileState[,] _gameBoard;
-
-    private readonly int _gridSize;
-    private int _moveCount;
-
-    private Action<TurnResult> _onGameOver;
-    private ITicTacTurnChecker _ticTacTurnCheckerImplementation;
-
-
-    public TicTacTurnChecker(int gridSize)
+    public class TicTacTurnChecker : IGameOverNotificator, ITicTacTurnChecker
     {
-        _gridSize = gridSize;
-        _gameBoard = new TileState[_gridSize, _gridSize];
-    }
+        private readonly TileState[,] _gameBoard;
 
-    public void SubscribeToGameOver(Action<TurnResult> gameOver)
-    {
-        _onGameOver += gameOver;
-    }
+        private readonly int _gridSize;
+        private int _moveCount;
 
-    public void DoMove(MarkType mark, int x, int y)
-    {
-        var state = mark == MarkType.Cross ? TileState.Cross : TileState.Zero;
+        private Action<TurnResult> _onGameOver;
+        private ITicTacTurnChecker _ticTacTurnCheckerImplementation;
 
-        _gameBoard[x, y] = state;
-        var result = CheckWin(state, x, y);
 
-        if (result != TurnResult.None)
+        public TicTacTurnChecker(int gridSize)
         {
-            _onGameOver?.Invoke(result);
+            _gridSize = gridSize;
+            _gameBoard = new TileState[_gridSize, _gridSize];
         }
-    }
 
-    private TurnResult CheckWin(TileState mark, int x, int y)
-    {
-        Func<TileState, TurnResult> markToGameResult =
-            state => state == TileState.Cross ? TurnResult.Cross : TurnResult.Zero;
-        
-        _moveCount++;
-
-        for (var i = 0; i < _gridSize; i++)
+        public void SubscribeToGameOver(Action<TurnResult> gameOver)
         {
-            if (_gameBoard[x, i] != mark)
-            {
-                break;
-            }
+            _onGameOver += gameOver;
+        }
 
-            if (i == _gridSize - 1)
+        public void DoMove(MarkType mark, int x, int y)
+        {
+            var state = mark == MarkType.Cross ? TileState.Cross : TileState.Zero;
+
+            _gameBoard[x, y] = state;
+            var result = CheckWin(state, x, y);
+
+            if (result != TurnResult.None)
             {
-                return markToGameResult(mark);
+                _onGameOver?.Invoke(result);
             }
         }
 
-        for (var i = 0; i < _gridSize; i++)
+        private TurnResult CheckWin(TileState mark, int x, int y)
         {
-            if (_gameBoard[i, y] != mark)
-            {
-                break;
-            }
+            Func<TileState, TurnResult> markToGameResult =
+                state => state == TileState.Cross ? TurnResult.Cross : TurnResult.Zero;
 
-            if (i == _gridSize - 1)
-            {
-                return markToGameResult(mark);
-            }
-        }
+            _moveCount++;
 
-        if (x == y)
-        {
             for (var i = 0; i < _gridSize; i++)
             {
-                if (_gameBoard[i, i] != mark)
+                if (_gameBoard[x, i] != mark)
                 {
                     break;
                 }
@@ -83,13 +57,10 @@ public class TicTacTurnChecker : IGameOverNotificator, ITicTacTurnChecker
                     return markToGameResult(mark);
                 }
             }
-        }
 
-        if (x + y == _gridSize - 1)
-        {
             for (var i = 0; i < _gridSize; i++)
             {
-                if (_gameBoard[i, _gridSize - 1 - i] != mark)
+                if (_gameBoard[i, y] != mark)
                 {
                     break;
                 }
@@ -99,13 +70,45 @@ public class TicTacTurnChecker : IGameOverNotificator, ITicTacTurnChecker
                     return markToGameResult(mark);
                 }
             }
-        }
 
-        if (_moveCount == Mathf.Pow(_gridSize, 2) - 1)
-        {
-            return TurnResult.Draw;
-        }
+            if (x == y)
+            {
+                for (var i = 0; i < _gridSize; i++)
+                {
+                    if (_gameBoard[i, i] != mark)
+                    {
+                        break;
+                    }
 
-        return TurnResult.None;
+                    if (i == _gridSize - 1)
+                    {
+                        return markToGameResult(mark);
+                    }
+                }
+            }
+
+            if (x + y == _gridSize - 1)
+            {
+                for (var i = 0; i < _gridSize; i++)
+                {
+                    if (_gameBoard[i, _gridSize - 1 - i] != mark)
+                    {
+                        break;
+                    }
+
+                    if (i == _gridSize - 1)
+                    {
+                        return markToGameResult(mark);
+                    }
+                }
+            }
+
+            if (_moveCount == Mathf.Pow(_gridSize, 2) - 1)
+            {
+                return TurnResult.Draw;
+            }
+
+            return TurnResult.None;
+        }
     }
 }

@@ -1,37 +1,42 @@
-﻿using System;
+﻿using tictac.GameRules;
+using tictac.Tiles;
 using UnityEngine;
 using Zenject;
 
-[RequireComponent(typeof(BoxCollider2D))]
-public class TileView : MonoBehaviour, ITile
+namespace tictac.UI
 {
-    [Inject] private TurnWarden _turnWarden;
-    [Inject] private IMarkViewFactory _markFactory;
-    private Tile _tile;
-    public int X => _tile.X;
-    public int Y => _tile.Y;
-
-    public void Initialize(int x, int y)
+    [RequireComponent(typeof(BoxCollider2D))]
+    public class TileView : MonoBehaviour, ITile
     {
-        _tile = new Tile(_turnWarden, x, y);
-    }
+        [Inject] private IMarkViewFactory _markFactory;
+        private Tile _tile;
+        [Inject] private TurnWarden _turnWarden;
 
-    private void OnMouseDown()
-    {
-        Debug.Log($"{X} {Y}");
-        ApplyTile();
-    }
-
-    public bool ApplyTile()
-    {
-        var type = _turnWarden.GetCurrentMark();
-        var result = _tile.ApplyTile();
-        if (result)
+        private void OnMouseDown()
         {
-            var go = _markFactory.Create(type, transform.position);
-            go.transform.SetParent(transform);
+            Debug.Log($"{X} {Y}");
+            ApplyTile();
         }
 
-        return result;
+        public int X => _tile.X;
+        public int Y => _tile.Y;
+
+        public bool ApplyTile()
+        {
+            var type = _turnWarden.GetCurrentMark();
+            var result = _tile.ApplyTile();
+            if (result)
+            {
+                var go = _markFactory.Create(type, transform.position);
+                go.transform.SetParent(transform);
+            }
+
+            return result;
+        }
+
+        public void Initialize(int x, int y)
+        {
+            _tile = new Tile(_turnWarden, x, y);
+        }
     }
 }

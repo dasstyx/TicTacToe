@@ -1,64 +1,71 @@
-﻿using System;
+﻿using tictac.GameRules.GameTurnCheck;
+using tictac.Tiles;
 using Zenject;
 
-public class TurnWarden
+namespace tictac.GameRules
 {
-    private IGameOverNotificator _notificator;
-    private Player[] _players;
-    private int _activePlayerIndex;
-    public Player ActivePlayer => _players[_activePlayerIndex];
-    private ITicTacTurnChecker _checker;
-    // TODO: Move to the class, don't handle GameOver subscription
-    private bool _stillPlaying;
-    
-    public class Factory : PlaceholderFactory<Player[], int, TurnWarden>
+    public class TurnWarden
     {
-    }
+        private int _activePlayerIndex;
+        private readonly ITicTacTurnChecker _checker;
+        private readonly IGameOverNotificator _notificator;
 
-    public TurnWarden(Player[] players, int activePlayer, ITicTacTurnChecker checker, IGameOverNotificator notificator)
-    {
-        _stillPlaying = true;
-        _players = players;
-        _activePlayerIndex = activePlayer;
-        _checker = checker;
+        private readonly Player[] _players;
 
-        _notificator = notificator;
-        _notificator.SubscribeToGameOver(_ => GameOver());
-    }
+        // TODO: Move to the class, don't handle GameOver subscription
+        private bool _stillPlaying;
 
-    public bool MakeTurn(ITile tile)
-    {
-        return MakeTurn(ActivePlayer, tile);
-    }
-
-    public bool MakeTurn(Player player, ITile tile)
-    {
-        if (!_stillPlaying || player != ActivePlayer)
+        public TurnWarden(Player[] players, int activePlayer, ITicTacTurnChecker checker, IGameOverNotificator notificator)
         {
-            return false;
+            _stillPlaying = true;
+            _players = players;
+            _activePlayerIndex = activePlayer;
+            _checker = checker;
+
+            _notificator = notificator;
+            _notificator.SubscribeToGameOver(_ => GameOver());
         }
 
-        var mark = player.MarkTypeHolding;
-        var x = tile.X;
-        var y = tile.Y;
-        _checker.DoMove(mark, x, y);
+        public Player ActivePlayer => _players[_activePlayerIndex];
 
-        SwapPlayers();
-        return true;
-    }
+        public bool MakeTurn(ITile tile)
+        {
+            return MakeTurn(ActivePlayer, tile);
+        }
 
-    public MarkType GetCurrentMark()
-    {
-        return ActivePlayer.MarkTypeHolding;
-    }
+        public bool MakeTurn(Player player, ITile tile)
+        {
+            if (!_stillPlaying || player != ActivePlayer)
+            {
+                return false;
+            }
 
-    private void SwapPlayers()
-    {
-        _activePlayerIndex = _activePlayerIndex == 0 ? 1 : 0;
-    }
+            var mark = player.MarkTypeHolding;
+            var x = tile.X;
+            var y = tile.Y;
+            _checker.DoMove(mark, x, y);
 
-    private void GameOver()
-    {
-        _stillPlaying = false;
+            SwapPlayers();
+            return true;
+        }
+
+        public MarkType GetCurrentMark()
+        {
+            return ActivePlayer.MarkTypeHolding;
+        }
+
+        private void SwapPlayers()
+        {
+            _activePlayerIndex = _activePlayerIndex == 0 ? 1 : 0;
+        }
+
+        private void GameOver()
+        {
+            _stillPlaying = false;
+        }
+
+        public class Factory : PlaceholderFactory<Player[], int, TurnWarden>
+        {
+        }
     }
 }

@@ -1,6 +1,9 @@
-﻿public interface ITile
+﻿namespace tictac.Tiles
 {
-    int X { get; }
-    int Y { get; }
-    bool ApplyTile();
+    public interface ITile
+    {
+        int X { get; }
+        int Y { get; }
+        bool ApplyTile();
+    }
 }

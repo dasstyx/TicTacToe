@@ -1,6 +1,9 @@
 ﻿using System;
 
-public interface IGameOverNotificator
+namespace tictac.GameRules.GameTurnCheck
 {
-    void SubscribeToGameOver(Action<TurnResult> gameOver);
+    public interface IGameOverNotificator
+    {
+        void SubscribeToGameOver(Action<TurnResult> gameOver);
+    }
 }

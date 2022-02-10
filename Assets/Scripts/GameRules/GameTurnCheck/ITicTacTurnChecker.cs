@@ -1,4 +1,7 @@
-﻿public interface ITicTacTurnChecker
+﻿namespace tictac.GameRules.GameTurnCheck
 {
-    void DoMove(MarkType mark, int x, int y);
+    public interface ITicTacTurnChecker
+    {
+        void DoMove(MarkType mark, int x, int y);
+    }
 }

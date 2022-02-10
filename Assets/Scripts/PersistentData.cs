@@ -1,49 +1,54 @@
 ﻿using System;
+using tictac.GameRules.GameTurnCheck;
 using UnityEngine;
 using Zenject;
 
-public class PersistentData : MonoBehaviour
+namespace tictac
 {
-    private Action _onChange;
-    [Inject] private IGameOverNotificator _notificator;
-    public int XCount { get; private set; }
-    public int OCount { get; private set; }
-    
-    private void Start()
+    public class PersistentData : MonoBehaviour
     {
-        LoadData();
-        _notificator.SubscribeToGameOver(result => HandleResult(result));
-    }
+        [Inject] private IGameOverNotificator _notificator;
+        private Action _onChange;
+        public int XCount { get; private set; }
+        public int OCount { get; private set; }
 
-    public void SubscribeOnScoreChange(Action onChange)
-    {
-        _onChange += onChange;
-    }
-
-    private void HandleResult(TurnResult result)
-    {
-        if (result == TurnResult.Draw)
+        private void Start()
         {
-            return;
+            LoadData();
+            _notificator.SubscribeToGameOver(result => HandleResult(result));
         }
 
-        if (result == TurnResult.Cross)
+        public void SubscribeOnScoreChange(Action onChange)
         {
-            XCount++;
-            PlayerPrefs.SetInt("X", XCount); 
+            _onChange += onChange;
         }
-        else if(result == TurnResult.Zero)
+
+        private void HandleResult(TurnResult result)
         {
-            OCount++;
-            PlayerPrefs.SetInt("O", OCount); 
+            if (result == TurnResult.Draw)
+            {
+                return;
+            }
+
+            if (result == TurnResult.Cross)
+            {
+                XCount++;
+                PlayerPrefs.SetInt("X", XCount);
+            }
+            else if (result == TurnResult.Zero)
+            {
+                OCount++;
+                PlayerPrefs.SetInt("O", OCount);
+            }
+
+            _onChange?.Invoke();
         }
-        _onChange?.Invoke();
-    }
-    
-    private void LoadData()
-    {
-        XCount = PlayerPrefs.GetInt("X", 0); 
-        OCount = PlayerPrefs.GetInt("O", 0); 
-        _onChange?.Invoke();
+
+        private void LoadData()
+        {
+            XCount = PlayerPrefs.GetInt("X", 0);
+            OCount = PlayerPrefs.GetInt("O", 0);
+            _onChange?.Invoke();
+        }
     }
 }

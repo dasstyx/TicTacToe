@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 
-public class TileViewOnScene : TileView
+namespace tictac.UI
 {
-    [SerializeField] private int _assignX;
-    [SerializeField] private int _assignY;
-    private void Start()
+    public class TileViewOnScene : TileView
     {
-        Initialize(_assignX, _assignY);
+        [SerializeField] private int _assignX;
+        [SerializeField] private int _assignY;
+
+        private void Start()
+        {
+            Initialize(_assignX, _assignY);
+        }
     }
 }

@@ -1,7 +1,10 @@
-﻿public enum TurnResult
+﻿namespace tictac.GameRules.GameTurnCheck
 {
-    Cross,
-    Zero,
-    Draw,
-    None
+    public enum TurnResult
+    {
+        Cross,
+        Zero,
+        Draw,
+        None
+    }
 }

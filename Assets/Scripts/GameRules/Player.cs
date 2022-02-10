@@ -1,16 +1,19 @@
-﻿public class Player
+﻿namespace tictac.GameRules
 {
-    public MarkType MarkTypeHolding { get; private set; }
-    public string Name { get; }
-
-    public Player(MarkType markTypeHolding, string name)
+    public class Player
     {
-        MarkTypeHolding = markTypeHolding;
-        Name = name;
-    }
+        public Player(MarkType markTypeHolding, string name)
+        {
+            MarkTypeHolding = markTypeHolding;
+            Name = name;
+        }
 
-    public void ChangeMarkType(MarkType newMark)
-    {
-        MarkTypeHolding = newMark;
+        public MarkType MarkTypeHolding { get; private set; }
+        public string Name { get; }
+
+        public void ChangeMarkType(MarkType newMark)
+        {
+            MarkTypeHolding = newMark;
+        }
     }
 }

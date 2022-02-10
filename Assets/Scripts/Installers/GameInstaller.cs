@@ -1,26 +1,32 @@
-using UnityEngine;
+using tictac.Bootstrap;
+using tictac.GameRules;
+using tictac.GameRules.GameTurnCheck;
+using tictac.UI;
 using Zenject;
 
-public class GameInstaller : MonoInstaller
+namespace tictac.Installers
 {
-    private readonly int _boardSize = 3;
-
-    public override void InstallBindings()
+    public class GameInstaller : MonoInstaller
     {
-        Container.BindInstance(_boardSize).WhenInjectedInto(typeof(TicTacTurnChecker));
-        Container.BindInterfacesTo<TicTacTurnChecker>().AsSingle();
-        Container.Bind<IMarkViewFactory>().To<MarkViewFactory>().FromComponentInHierarchy().AsSingle();
+        private readonly int _boardSize = 3;
 
-        Container.BindFactory<Player[], int, TurnWarden, TurnWarden.Factory>();
-        WardenSetup();
+        public override void InstallBindings()
+        {
+            Container.BindInstance(_boardSize).WhenInjectedInto(typeof(TicTacTurnChecker));
+            Container.BindInterfacesTo<TicTacTurnChecker>().AsSingle();
+            Container.Bind<IMarkViewFactory>().To<MarkViewFactory>().FromComponentInHierarchy().AsSingle();
 
-        Container.Bind<ResolvePlayerFromResult>().AsSingle();
-        Container.Bind<PersistentData>().FromComponentInHierarchy().AsSingle();
-    }
+            Container.BindFactory<Player[], int, TurnWarden, TurnWarden.Factory>();
+            WardenSetup();
 
-    private void WardenSetup()
-    {
-        var bootstrap = FindObjectOfType<GameBootstrap>();
-        Container.Bind<TurnWarden>().FromMethod(bootstrap.WardenSetup).AsSingle();  
+            Container.Bind<ResolvePlayerFromResult>().AsSingle();
+            Container.Bind<PersistentData>().FromComponentInHierarchy().AsSingle();
+        }
+
+        private void WardenSetup()
+        {
+            var bootstrap = FindObjectOfType<GameBootstrap>();
+            Container.Bind<TurnWarden>().FromMethod(bootstrap.WardenSetup).AsSingle();
+        }
     }
 }

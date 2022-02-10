@@ -1,6 +1,9 @@
-﻿public enum TileState
+﻿namespace tictac.GameRules.GameTurnCheck
 {
-    Blank,
-    Cross,
-    Zero
+    public enum TileState
+    {
+        Blank,
+        Cross,
+        Zero
+    }
 }

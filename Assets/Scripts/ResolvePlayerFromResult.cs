@@ -1,14 +1,20 @@
-﻿public class ResolvePlayerFromResult
-{
-    private TurnWarden _turnWarden;
-    
-    public ResolvePlayerFromResult(TurnWarden turnWarden)
-    {
-        _turnWarden = turnWarden;
-    }
+﻿using tictac.GameRules;
+using tictac.GameRules.GameTurnCheck;
 
-    public Player ResultToPlayer(TurnResult result)
+namespace tictac
+{
+    public class ResolvePlayerFromResult
     {
-        return _turnWarden.ActivePlayer;
+        private readonly TurnWarden _turnWarden;
+
+        public ResolvePlayerFromResult(TurnWarden turnWarden)
+        {
+            _turnWarden = turnWarden;
+        }
+
+        public Player ResultToPlayer(TurnResult result)
+        {
+            return _turnWarden.ActivePlayer;
+        }
     }
 }

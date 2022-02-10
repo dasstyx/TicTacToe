@@ -2,16 +2,19 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Button))]
-public class RestartGameView : MonoBehaviour
+namespace tictac.UI
 {
-    private void Start()
+    [RequireComponent(typeof(Button))]
+    public class RestartGameView : MonoBehaviour
     {
-        GetComponent<Button>().onClick.AddListener(RestartGame);
-    }
+        private void Start()
+        {
+            GetComponent<Button>().onClick.AddListener(RestartGame);
+        }
 
-    private void RestartGame()
-    {
-        SceneManager.LoadScene(0);
+        private void RestartGame()
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 }

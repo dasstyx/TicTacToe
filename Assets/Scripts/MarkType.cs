@@ -1,5 +1,8 @@
-﻿public enum MarkType
+﻿namespace tictac
 {
-    Cross,
-    Zero
+    public enum MarkType
+    {
+        Cross,
+        Zero
+    }
 }

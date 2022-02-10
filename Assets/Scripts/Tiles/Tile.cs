@@ -1,38 +1,40 @@
 ﻿using System;
-using Zenject;
+using tictac.GameRules;
 
-[Serializable]
-public class Tile : ITile
+namespace tictac.Tiles
 {
-    private TurnWarden _turnWarden;
-    private bool _isEmpty = true;
-    private int _x;
-    private int _y;
-
-    public int X => _x;
-
-    public int Y => _y;
-
-    public Tile(TurnWarden turnWarden, int x, int y)
+    [Serializable]
+    public class Tile : ITile
     {
-        _turnWarden = turnWarden;
-        _x = x;
-        _y = y;
-    }
+        private bool _isEmpty = true;
+        private TurnWarden _turnWarden;
 
-    public bool ApplyTile()
-    {
-        var turnDone = MakeTurn();
-        if (!_isEmpty || !turnDone)
+        public Tile(TurnWarden turnWarden, int x, int y)
         {
-            return false;
+            _turnWarden = turnWarden;
+            X = x;
+            Y = y;
         }
-        _isEmpty = false;
-        return true;
-    }
 
-    private bool MakeTurn()
-    {
-        return _turnWarden.MakeTurn(this);
+        public int X { get; }
+
+        public int Y { get; }
+
+        public bool ApplyTile()
+        {
+            var turnDone = MakeTurn();
+            if (!_isEmpty || !turnDone)
+            {
+                return false;
+            }
+
+            _isEmpty = false;
+            return true;
+        }
+
+        private bool MakeTurn()
+        {
+            return _turnWarden.MakeTurn(this);
+        }
     }
 }
