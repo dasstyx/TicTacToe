@@ -2,7 +2,7 @@
 using UnityEngine;
 using Zenject;
 
-public class PersistantData : MonoBehaviour
+public class PersistentData : MonoBehaviour
 {
     private Action _onChange;
     [Inject] private IGameOverNotificator _notificator;

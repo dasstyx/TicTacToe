@@ -40,6 +40,8 @@ public class TicTacTurnChecker : IGameOverNotificator, ITicTacTurnChecker
     {
         Func<TileState, TurnResult> markToGameResult =
             state => state == TileState.Cross ? TurnResult.Cross : TurnResult.Zero;
+        
+        _moveCount++;
 
         for (var i = 0; i < _gridSize; i++)
         {

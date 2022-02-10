@@ -15,7 +15,7 @@ public class GameInstaller : MonoInstaller
         WardenSetup();
 
         Container.Bind<ResolvePlayerFromResult>().AsSingle();
-        Container.Bind<PersistantData>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<PersistentData>().FromComponentInHierarchy().AsSingle();
     }
 
     private void WardenSetup()
